@@ -1,79 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Vcript — chat interface</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vcript Chat Interface</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- PeerJS Library for real-time WebRTC multi-user connections across devices -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <div class="logo"><span class="v">V</span>cript</div>
-    <div class="tagline">chat interface</div>
-  </div>
-  <div class="room-status" id="roomStatus">not connected</div>
-</header>
-
-<main class="app">
-
-  <!-- LEFT: create / join panel -->
-  <aside class="panel-auth" id="authPanel">
-    <div class="tabs" role="tablist">
-      <button class="tab active" data-tab="create" role="tab" aria-selected="true">Create group</button>
-      <button class="tab" data-tab="join" role="tab" aria-selected="false">Join group</button>
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-brand">
+      <span class="v-red">V</span>cript chat interface
     </div>
+  </header>
 
-    <form id="createForm" class="auth-form active" autocomplete="off">
-      <label for="createCode">vcript code</label>
-      <input id="createCode" maxlength="40" placeholder="e.g. BANANA62" autocomplete="off" />
-
-      <label for="createName">username</label>
-      <input id="createName" maxlength="20" placeholder="e.g. vish" autocomplete="off" />
-
-      <button type="submit" class="btn btn-primary">Call</button>
-      <p class="hint">Pick any code — letters, numbers, dashes. Share it with whoever you want in the group.</p>
-    </form>
-
-    <form id="joinForm" class="auth-form" autocomplete="off">
-      <label for="joinCode">vcript code</label>
-      <input id="joinCode" maxlength="40" placeholder="e.g. BANANA62" autocomplete="off" />
-
-      <label for="joinName">username</label>
-      <input id="joinName" maxlength="20" placeholder="e.g. vish" autocomplete="off" />
-
-      <button type="submit" class="btn btn-primary">Answer</button>
-      <p class="hint">Enter the exact code someone shared with you.</p>
-    </form>
-
-    <p id="authError" class="error" hidden></p>
-  </aside>
-
-  <!-- RIGHT: message area -->
-  <section class="panel-chat" id="chatPanel" hidden>
-    <div class="chat-meta">
-      <span id="roomCode" class="room-code"></span>
-      <span id="userCount" class="user-count">0 online</span>
-    </div>
-
-    <div class="chat-box" id="chatBox"></div>
-
-    <form id="messageForm" class="message-form" autocomplete="off">
-      <input id="messageInput" maxlength="500" placeholder="type a message..." autocomplete="off" />
-      <div class="chat-actions">
-        <button type="submit" class="btn btn-push">Push</button>
-        <button type="button" id="jumpBtn" class="btn btn-jump">Jump</button>
+  <!-- Main Container -->
+  <main class="chat-container">
+    
+    <!-- Left Sidebar Panel -->
+    <section class="left-panel">
+      <div class="field-group">
+        <label for="cg-code">enter cg code</label>
+        <input type="text" id="cg-code" placeholder="e.g. BANANA62" autocomplete="off" />
       </div>
-    </form>
-  </section>
 
-</main>
+      <div class="field-group">
+        <label for="un-input">enter un</label>
+        <input type="text" id="un-input" placeholder="e.g. user1" autocomplete="off" />
+      </div>
 
-<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-<script src="app.js"></script>
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button id="btn-call" class="btn btn-action">Call</button>
+        <button id="btn-answer" class="btn btn-action">Answer</button>
+      </div>
+
+      <div id="status-indicator" class="status-box">Status: Disconnected</div>
+    </section>
+
+    <!-- Right Chat Area -->
+    <section class="right-panel">
+      <!-- Chat Display Box -->
+      <div class="chat-box" id="chat-messages">
+        <!-- Messages rendered dynamically here -->
+      </div>
+
+      <!-- Message Input & Buttons -->
+      <div class="input-controls">
+        <input type="text" id="message-input" placeholder="Type a message..." disabled autocomplete="off" />
+        <button id="btn-push" class="btn btn-push" disabled>Push</button>
+        <button id="btn-jump" class="btn btn-jump" disabled>Jump</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
