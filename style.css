@@ -1,0 +1,33 @@
+/* Vcript Dark Retro Theme Stylesheet */
+body {
+    background-color: #0c0d10;
+    color: #e1e4ed;
+    font-family: 'Fira Code', monospace;
+}
+
+.text-vcript-red { color: #ff334b; }
+.bg-vcript-red { background-color: #ff334b; }
+.bg-vcript-bg { background-color: #0c0d10; }
+.bg-vcript-card { background-color: #14151a; }
+.border-vcript-border { border-color: #262830; }
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0c0d10;
+}
+::-webkit-scrollbar-thumb {
+    background: #262830;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ff334b;
+}
+
+.terminal-box {
+    background-color: #14151a;
+    border: 2px solid #262830;
+    border-radius: 8px;
+}

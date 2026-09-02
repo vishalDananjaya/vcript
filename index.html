@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vcript Chat Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-vcript-bg text-vcript-text font-mono min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+    <header class="w-full max-w-6xl mx-auto border-b border-vcript-border pb-4 mb-6 flex items-center justify-between">
+        <div>
+            <div class="flex items-baseline space-x-1">
+                <span class="text-4xl font-extrabold text-vcript-red tracking-tight">V</span>
+                <span class="text-2xl font-bold tracking-tight text-white">cript</span>
+            </div>
+            <p class="text-xs text-vcript-muted tracking-wider uppercase">chat interface</p>
+        </div>
+    </header>
+
+    <main class="w-full max-w-6xl mx-auto flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Room Controls -->
+        <section class="lg:col-span-5 flex flex-col space-y-6">
+            <div class="terminal-box p-6 space-y-5">
+                <div class="flex items-center justify-between border-b border-vcript-border pb-3">
+                    <h2 class="text-sm font-bold text-white uppercase">&gt; Room Setup</h2>
+                    <div class="flex bg-vcript-bg p-1 rounded border border-vcript-border text-xs">
+                        <button id="tabCall" onclick="switchMode('call')" class="px-3 py-1 rounded font-semibold text-white bg-vcript-red">Call</button>
+                        <button id="tabAnswer" onclick="switchMode('answer')" class="px-3 py-1 rounded font-semibold text-vcript-muted">Answer</button>
+                    </div>
+                </div>
+
+                <form id="roomForm" onsubmit="handleRoomAction(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs uppercase text-vcript-muted mb-1">enter cg code</label>
+                        <input type="text" id="cgCodeInput" required placeholder="e.g. BANANA62" class="w-full bg-vcript-bg border border-vcript-border rounded px-3 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-vcript-muted mb-1">enter un</label>
+                        <input type="text" id="usernameInput" required placeholder="e.g. user1" class="w-full bg-vcript-bg border border-vcript-border rounded px-3 py-2 text-sm text-white">
+                    </div>
+                    <button type="submit" id="actionBtn" class="w-full bg-vcript-red text-white font-bold py-3 rounded">
+                        <span id="btnText">Call</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Messages Section -->
+        <section class="lg:col-span-7 flex flex-col space-y-4">
+            <div class="terminal-box flex flex-col h-[460px] overflow-hidden">
+                <div class="bg-vcript-bg border-b border-vcript-border px-4 py-3 flex justify-between text-xs text-vcript-muted">
+                    <span id="chatTitle">Message Area</span>
+                </div>
+                <div id="chatMessages" class="flex-1 p-5 overflow-y-auto space-y-2 flex flex-col"></div>
+            </div>
+
+            <form id="messageForm" onsubmit="handleSendMessage(event)" class="space-y-3">
+                <input type="text" id="messageInput" disabled placeholder="Type message..." class="w-full bg-vcript-card border border-vcript-border rounded px-4 py-3 text-sm text-white">
+                <div class="grid grid-cols-2 gap-4">
+                    <button type="submit" id="pushBtn" disabled class="bg-vcript-card text-white font-bold py-3 rounded border border-vcript-border">Push</button>
+                    <button type="button" id="jumpBtn" onclick="handleLeaveGroup()" disabled class="bg-vcript-red text-white font-bold py-3 rounded">Jump</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
