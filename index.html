@@ -1,72 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vcript Chat Interface</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vcript — chat interface</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-vcript-bg text-vcript-text font-mono min-h-screen flex flex-col justify-between p-4 md:p-8">
+<body>
 
-    <header class="w-full max-w-6xl mx-auto border-b border-vcript-border pb-4 mb-6 flex items-center justify-between">
-        <div>
-            <div class="flex items-baseline space-x-1">
-                <span class="text-4xl font-extrabold text-vcript-red tracking-tight">V</span>
-                <span class="text-2xl font-bold tracking-tight text-white">cript</span>
-            </div>
-            <p class="text-xs text-vcript-muted tracking-wider uppercase">chat interface</p>
-        </div>
-    </header>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo"><span class="v">V</span>cript</div>
+    <div class="tagline">chat interface</div>
+  </div>
+  <div class="room-status" id="roomStatus">not connected</div>
+</header>
 
-    <main class="w-full max-w-6xl mx-auto flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- Room Controls -->
-        <section class="lg:col-span-5 flex flex-col space-y-6">
-            <div class="terminal-box p-6 space-y-5">
-                <div class="flex items-center justify-between border-b border-vcript-border pb-3">
-                    <h2 class="text-sm font-bold text-white uppercase">&gt; Room Setup</h2>
-                    <div class="flex bg-vcript-bg p-1 rounded border border-vcript-border text-xs">
-                        <button id="tabCall" onclick="switchMode('call')" class="px-3 py-1 rounded font-semibold text-white bg-vcript-red">Call</button>
-                        <button id="tabAnswer" onclick="switchMode('answer')" class="px-3 py-1 rounded font-semibold text-vcript-muted">Answer</button>
-                    </div>
-                </div>
+<main class="app">
 
-                <form id="roomForm" onsubmit="handleRoomAction(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs uppercase text-vcript-muted mb-1">enter cg code</label>
-                        <input type="text" id="cgCodeInput" required placeholder="e.g. BANANA62" class="w-full bg-vcript-bg border border-vcript-border rounded px-3 py-2 text-sm text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase text-vcript-muted mb-1">enter un</label>
-                        <input type="text" id="usernameInput" required placeholder="e.g. user1" class="w-full bg-vcript-bg border border-vcript-border rounded px-3 py-2 text-sm text-white">
-                    </div>
-                    <button type="submit" id="actionBtn" class="w-full bg-vcript-red text-white font-bold py-3 rounded">
-                        <span id="btnText">Call</span>
-                    </button>
-                </form>
-            </div>
-        </section>
+  <!-- LEFT: create / join panel -->
+  <aside class="panel-auth" id="authPanel">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="create" role="tab" aria-selected="true">Create group</button>
+      <button class="tab" data-tab="join" role="tab" aria-selected="false">Join group</button>
+    </div>
 
-        <!-- Messages Section -->
-        <section class="lg:col-span-7 flex flex-col space-y-4">
-            <div class="terminal-box flex flex-col h-[460px] overflow-hidden">
-                <div class="bg-vcript-bg border-b border-vcript-border px-4 py-3 flex justify-between text-xs text-vcript-muted">
-                    <span id="chatTitle">Message Area</span>
-                </div>
-                <div id="chatMessages" class="flex-1 p-5 overflow-y-auto space-y-2 flex flex-col"></div>
-            </div>
+    <form id="createForm" class="auth-form active" autocomplete="off">
+      <label for="createCode">vcript code</label>
+      <input id="createCode" maxlength="40" placeholder="e.g. BANANA62" autocomplete="off" />
 
-            <form id="messageForm" onsubmit="handleSendMessage(event)" class="space-y-3">
-                <input type="text" id="messageInput" disabled placeholder="Type message..." class="w-full bg-vcript-card border border-vcript-border rounded px-4 py-3 text-sm text-white">
-                <div class="grid grid-cols-2 gap-4">
-                    <button type="submit" id="pushBtn" disabled class="bg-vcript-card text-white font-bold py-3 rounded border border-vcript-border">Push</button>
-                    <button type="button" id="jumpBtn" onclick="handleLeaveGroup()" disabled class="bg-vcript-red text-white font-bold py-3 rounded">Jump</button>
-                </div>
-            </form>
-        </section>
-    </main>
+      <label for="createName">username</label>
+      <input id="createName" maxlength="20" placeholder="e.g. vish" autocomplete="off" />
 
-    <script src="script.js"></script>
+      <button type="submit" class="btn btn-primary">Call</button>
+      <p class="hint">Pick any code — letters, numbers, dashes. Share it with whoever you want in the group.</p>
+    </form>
+
+    <form id="joinForm" class="auth-form" autocomplete="off">
+      <label for="joinCode">vcript code</label>
+      <input id="joinCode" maxlength="40" placeholder="e.g. BANANA62" autocomplete="off" />
+
+      <label for="joinName">username</label>
+      <input id="joinName" maxlength="20" placeholder="e.g. vish" autocomplete="off" />
+
+      <button type="submit" class="btn btn-primary">Answer</button>
+      <p class="hint">Enter the exact code someone shared with you.</p>
+    </form>
+
+    <p id="authError" class="error" hidden></p>
+  </aside>
+
+  <!-- RIGHT: message area -->
+  <section class="panel-chat" id="chatPanel" hidden>
+    <div class="chat-meta">
+      <span id="roomCode" class="room-code"></span>
+      <span id="userCount" class="user-count">0 online</span>
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <form id="messageForm" class="message-form" autocomplete="off">
+      <input id="messageInput" maxlength="500" placeholder="type a message..." autocomplete="off" />
+      <div class="chat-actions">
+        <button type="submit" class="btn btn-push">Push</button>
+        <button type="button" id="jumpBtn" class="btn btn-jump">Jump</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
